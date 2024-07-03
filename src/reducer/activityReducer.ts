@@ -1,13 +1,17 @@
 import { Activity } from "../types"
 
-export type ActivityActions = {type: 'save-activity',payload: {newActivity : Activity}}
+export type ActivityActions = 
+    {type: 'save-activity',payload: {newActivity : Activity}} |
+    {type: 'save-activeId',payload: {id : Activity['id']}}
 
 type ActivityState = {
     activities: Activity[];
+    activeId: Activity['id']
 }
 
 export const initialState : ActivityState = {
-    activities: []
+    activities: [],
+    activeId: ''
 }
 
 export const acitivityReducer = (state: ActivityState = initialState, action: ActivityActions) : ActivityState => {
@@ -18,6 +22,10 @@ export const acitivityReducer = (state: ActivityState = initialState, action: Ac
             //Al crear una copia del estado anterior antes de modificarlo, te aseguras de que el estado original permanezca intacto, lo que facilita el seguimiento de los cambios y ayuda a prevenir errores difíciles de depurar.
             return {...state, activities:[...state.activities, action.payload.newActivity]}
 
+        case 'save-activeId':
+            // console.log(state);
+            return{...state, activeId: action.payload.id}
+            
         default: return state;
     }
     // if(action.type === 'save-activity'){

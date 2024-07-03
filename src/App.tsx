@@ -19,7 +19,7 @@ function App() {
         <Form dispatch={dispatch} />
       </div>
       <div className="w-full p-10 mx-auto">
-        <ActivityList activities={state.activities} />
+        <ActivityList activities={state.activities} dispatch={dispatch} />
       </div>
     </main>
     </>

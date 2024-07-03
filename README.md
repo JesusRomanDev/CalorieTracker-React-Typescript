@@ -28,3 +28,8 @@ Si isValidActivity() devuelve false, entonces el atributo disabled no se estable
 Es como decir si disabled es true entonces esta deshabilitado(el boton se deshabilita), si disabled es false entonces esta habilitado(el boton se habilita)
 
 - Cuando usamos useReducer es forzoso hacer una copia del estado anterior, aun y cuando vayamos a mutar ese estado, no importa que se mutara en el codigo, siempre vamos a tener que mutarlo al inicio con el spread (este comentario se hizo por el return de "save-activity" en el archivo activityReducer.ts)
+
+-Map en si retorna lo que le digamos, por ejemplo en la funcion categoryName = useMemo(() => (category : Activity['category']) => {
+        return categories.map(cat => cat.id === category ? cat.name : '' )
+    } ,[])
+Aqui lo que hicimos fue crear un nuevo array con map y asignarlo a la funcion categoryName y le decimos que si cat.id es igual a category, en ese espacio retorname el cat.name y si no un string vacio, map no tiene porque retornar un elemento del mismo tipo que estamos iterando, nos retornara lo que le digamos
