@@ -1,14 +1,15 @@
-import { Dispatch, useState } from "react"
+import { Dispatch, useEffect, useState } from "react"
 import categories from "../data/categories"
 import { Activity } from "../types";
-import { ActivityActions } from "../reducer/activityReducer";
+import { ActivityActions, ActivityState } from "../reducer/activityReducer";
 import {v4 as uuidv4} from 'uuid';
 
 type FormProps = {
-    dispatch: Dispatch<ActivityActions>
+    dispatch: Dispatch<ActivityActions>,
+    state: ActivityState
 }
 
-const Form = ({dispatch} : FormProps) => {
+const Form = ({dispatch, state} : FormProps) => {
 
     const initialState = {
         id: uuidv4(),
@@ -17,6 +18,16 @@ const Form = ({dispatch} : FormProps) => {
         calories: 0
     }
     const [activity, setActivity] = useState<Activity>(initialState);
+
+    useEffect(() => {
+        if(state.activeId){
+            console.log('Ya hay algo en activeId');
+            const selectedActivity = state.activities.filter(el => el.id === state.activeId)
+            console.log(selectedActivity);
+            setActivity(selectedActivity[0]); //le ponemos [0] porque activity espera un objeto, entonces del arreglo seleccionamos
+            //el primer elemento, que es un objeto (que en realidad es el unico porque ID son unicos) 
+        }
+    }, [state.activeId, state.activities])
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         console.log(e.target);
@@ -45,6 +56,15 @@ const Form = ({dispatch} : FormProps) => {
         //Reiniciando el formulario
         setActivity({...initialState, id: uuidv4()});
     }
+
+    const verifyEdit = (id: string, category: number): string => {
+        if (category === 1) {
+            return id ? 'Editar Comida' : 'Guardar Comida';
+        } else if (category === 2) {
+            return id ? 'Editar Ejercicio' : 'Guardar Ejercicio';
+        }
+        return 'Desconocido';
+    };
   return (
     <form onSubmit={e => handleSubmit(e)} className="space-y-5 bg-white shadow p-10 rounded-lg" action="">
         <div className="grid grid-cols-1 gap-3">
@@ -67,7 +87,7 @@ const Form = ({dispatch} : FormProps) => {
         </div>
 
         <button disabled={!isValidActivity()} type="submit" className="disabled:opacity-10 bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer">
-            {activity.category === 1 ? 'Guardar Comida' : 'Guardar Ejercicio'}
+            {verifyEdit(state?.activeId, activity.category)}
         </button>
     </form>
   )
