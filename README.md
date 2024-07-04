@@ -33,3 +33,6 @@ Es como decir si disabled es true entonces esta deshabilitado(el boton se deshab
         return categories.map(cat => cat.id === category ? cat.name : '' )
     } ,[])
 Aqui lo que hicimos fue crear un nuevo array con map y asignarlo a la funcion categoryName y le decimos que si cat.id es igual a category, en ese espacio retorname el cat.name y si no un string vacio, map no tiene porque retornar un elemento del mismo tipo que estamos iterando, nos retornara lo que le digamos
+
+- Para hacer dinamica el ultimo renderizado de componente hijo dentro de Calorie Tracker, el Calorie Display quisimos hacer sus clases dinamicas, para esto se le tuvo que pasar el prop applyClass={true} (los otros componentes renderizados no tienen este prop, por lo cual ya nos daria problemas en nuestro type, entonces tenemos que hacer esta propiedad opcional), mientras tanto en el mismo componente CalorieDisplay le decimos que como valor inicial este sera false, tambien recordando que el type sera de modo OPCIONAL (?), entonces despues escribimos en una constante const classApplied = applyClass ? (calories >= 0 ? 'text-green-500 ' : 'text-red-600 ') : '';   , asi la constante contendra si el texto es text green o text red, y ya en nuestro parrafo solo lo agregamos.
+ 

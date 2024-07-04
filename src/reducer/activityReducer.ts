@@ -3,11 +3,13 @@ import { Activity } from "../types"
 export type ActivityActions = 
     {type: 'save-activity',payload: {newActivity : Activity}} |
     {type: 'save-activeId',payload: {id : Activity['id']}} |
-    {type: 'delete-activity',payload: {id : Activity['id']}}
+    {type: 'delete-activity',payload: {id : Activity['id']}} |
+    {type: 'restart-activity'} 
 
-const localStorageActivities = () => {
+
+const localStorageActivities = () : Activity[] => {
     const activities = localStorage.getItem('activities');
-    return activities ? JSON.parse('activities') : [];
+    return activities ? JSON.parse(activities) : [];
 }
 
 export type ActivityState = {
@@ -42,6 +44,9 @@ export const acitivityReducer = (state: ActivityState = initialState, action: Ac
 
         case 'delete-activity':
             return {...state, activities: state.activities.filter(el => el.id !== action.payload.id) }
+
+        case 'restart-activity':
+            return {activities: [], activeId: ''}
         default: return state;
     }
     // if(action.type === 'save-activity'){
